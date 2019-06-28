@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/services.dart';
 
+//  "${PODS_ROOT}/Frameworks/xfvoice/Frameworks"
 /// Platform 需要实现的方法：
 /// 初始化方法：- init(String appid)
 /// 设置讯飞识别参数：- setParameter(Map param)
@@ -36,6 +37,10 @@ class XFVoice {
 
   Future<void> start({XFVoiceListener listener}) async {
     _channel.setMethodCallHandler((MethodCall call) async {
+      print(call.method);
+      if (call.arguments != null) {
+        print(call.arguments);
+      }
       if (call.method == 'onCancel' && listener?.onCancel != null) {
         listener.onCancel();
       }
