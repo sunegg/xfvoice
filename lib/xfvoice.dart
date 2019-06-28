@@ -5,16 +5,14 @@ import 'package:meta/meta.dart';
 import 'package:flutter/services.dart';
 
 /// Platform 需要实现的方法：
-/// - init(String appid)
-/// - setParameter(Map param)
-/// - start
-/// - stop
+/// 初始化方法：- init(String appid)
+/// 设置讯飞识别参数：- setParameter(Map param)
+/// 打开麦克风并开始识别：- start
+/// 关闭麦克风并停止识别：- stop
 class XFVoice {
   static const MethodChannel _channel = const MethodChannel('xfvoice');
 
   static final XFVoice shared = XFVoice._();
-
-  final Map<String, XFVoiceListener> _listeners = Map<String, XFVoiceListener>();
 
   XFVoice._();
 
@@ -70,22 +68,8 @@ class XFVoice {
   }
 }
 
-/**
-//IFlySpeechRecognizerDelegate协议实现
-//识别结果返回代理
-- (void) onResults:(NSArray *) results isLast:(BOOL)isLast{}
-//识别会话结束返回代理
-- (void)onCompleted: (IFlySpeechError *) error{}
-//停止录音回调
-- (void) onEndOfSpeech{}
-//开始录音回调
-- (void) onBeginOfSpeech{}
-//音量回调函数
-- (void) onVolumeChanged: (int)volume{}
-//会话取消回调
-- (void) onCancel{}
- */
-
+/// 讯飞语音识别的回调映射，有flutter来决定处理所有的回调结果，
+/// 会更具有灵活性
 class XFVoiceListener {
   VoidCallback onCancel;
   VoidCallback onEndOfSpeech;
