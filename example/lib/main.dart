@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:xfvoice/xfvoice.dart';
 
 void main() => runApp(MyApp());
@@ -23,23 +22,8 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     final voice = XFVoice.shared;
-    voice.init(appIdIos: 'iOS', appIdAndroid: 'android');
-    voice.setParameter({'key': 1, 'key string' : 'asdasd'});
-    voice.start();
-    voice.stop();
-
-
-    String platformVersion = 'asdasd';
-    // Platform messages may fail, so we use a try/catch PlatformException.
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+    voice.init(appIdIos: '5d133a41', appIdAndroid: '5d133aae');
+    voice.setParameter({'domain': 'iat', 'asr_ptt' : 0, 'asr_audio_path': 'xme.pcm'});
   }
 
   @override
@@ -50,9 +34,21 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: GestureDetector(
+            child: Text('按下开始识别，松手结束识别'),
+            onTapDown: onTapDown,
+            onTapUp: onTapUp,
+          ),
         ),
       ),
     );
+  }
+
+  onTapDown(TapDownDetails detail) {
+    XFVoice.shared.start();
+  }
+
+  onTapUp(TapUpDetails detail) {
+    XFVoice.shared.stop();
   }
 }
