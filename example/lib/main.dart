@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:io';
 
 import 'package:xfvoice/xfvoice.dart';
 
@@ -11,7 +12,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  String iflyResultString = '按下开始识别，松手结束识别';
 
   @override
   void initState() {
@@ -35,7 +36,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Center(
           child: GestureDetector(
-            child: Text('按下开始识别，松手结束识别'),
+            child: Text(iflyResultString),
             onTapDown: onTapDown,
             onTapUp: onTapUp,
           ),
@@ -45,7 +46,28 @@ class _MyAppState extends State<MyApp> {
   }
 
   onTapDown(TapDownDetails detail) {
-    XFVoice.shared.start();
+    iflyResultString = '';
+    final listen = XFVoiceListener(
+      onVolumeChanged: (volume) {
+        print('$volume');
+      },
+      onResults: (List<dynamic> results, isLast) {
+        if (results.length > 0) {
+          final first = results.first;
+          if (first is Map) {
+            setState(() {
+              iflyResultString += first.keys.first as String;
+            });
+          }
+        }
+      },
+      onCompleted: (Map<dynamic, dynamic> errInfo, String filePath) {
+        setState(() {
+          iflyResultString += '\n$filePath';
+        });
+      }
+    );
+    XFVoice.shared.start(listener: listen);
   }
 
   onTapUp(TapUpDetails detail) {

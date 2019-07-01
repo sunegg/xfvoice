@@ -20,10 +20,6 @@ static FlutterMethodChannel *_channel = nil;
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-    NSLog([call.method description]);
-    if (call.arguments != nil) {
-        NSLog([call.arguments description]);
-    }
     if ([@"init" isEqualToString:call.method]) {
         [self iflyInit:call.arguments];
     } else if ([@"setParameter" isEqualToString:call.method]) {
@@ -69,7 +65,13 @@ static FlutterMethodChannel *_channel = nil;
                           @"type": @(errorCode.errorType),
                           @"desc": errorCode.errorDesc
                           };
-    [_channel invokeMethod:@"onCompleted" arguments:@[dic, @"filePath"]];
+    NSString *path = [[IFlySpeechRecognizer sharedInstance] parameterForKey:@"asr_audio_path"];
+    NSArray *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory
+                                                              , NSUserDomainMask
+                                                              , YES);
+    NSString *folder = cachePaths.firstObject;
+    NSString *filePath = [folder stringByAppendingPathComponent:path];
+    [_channel invokeMethod:@"onCompleted" arguments:@[dic, filePath]];
 }
 
 - (void)onResults:(NSArray *)results isLast:(BOOL)isLast {

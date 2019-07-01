@@ -37,10 +37,6 @@ class XFVoice {
 
   Future<void> start({XFVoiceListener listener}) async {
     _channel.setMethodCallHandler((MethodCall call) async {
-      print(call.method);
-      if (call.arguments != null) {
-        print(call.arguments);
-      }
       if (call.method == 'onCancel' && listener?.onCancel != null) {
         listener.onCancel();
       }
@@ -80,7 +76,7 @@ class XFVoiceListener {
   VoidCallback onEndOfSpeech;
   VoidCallback onBeginOfSpeech;
   /// error信息构成的key-value map，[filePath]是音频文件路径
-  void Function(Map<String, dynamic> error, String filePath) onCompleted;
+  void Function(Map<dynamic, dynamic> error, String filePath) onCompleted;
   void Function(List results, bool isLast) onResults;
   void Function(int volume) onVolumeChanged;
 
