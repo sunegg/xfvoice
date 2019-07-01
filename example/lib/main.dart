@@ -24,7 +24,12 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     final voice = XFVoice.shared;
     voice.init(appIdIos: '5d133a41', appIdAndroid: '5d133aae');
-    voice.setParameter({'domain': 'iat', 'asr_ptt' : 0, 'asr_audio_path': 'xme.pcm', 'result_type': 'plain'});
+    final param = new XFVoiceParam();
+    param.domain = 'iat';
+    param.asr_ptt = '0';
+    param.asr_audio_path = 'xme.pcm';
+    param.result_type = 'plain';
+    voice.setParameter(param.toMap());
   }
 
   @override

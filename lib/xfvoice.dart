@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:core';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -87,4 +88,104 @@ class XFVoiceListener {
     this.onCompleted,
     this.onCancel
   });
+}
+
+
+class XFVoiceParam {
+  String speech_timeout;
+  String domain;
+  String result_type;
+  String timeout;
+  String power_cycle;
+  String sample_rate;
+  String engine_type;
+  String local;
+  String cloud;
+  String mix;
+  String auto;
+  String text_encoding;
+  String result_encoding;
+  String player_init;
+  String player_deactive;
+  String recorder_init;
+  String recorder_deactive;
+  String speed;
+  String pitch;
+  String tts_audio_path;
+  String vad_enable;
+  String vad_bos;
+  String vad_eos;
+  String voice_name;
+  String voice_id;
+  String voice_lang;
+  String volume;
+  String tts_buffer_time;
+  String tts_data_notify;
+  String next_text;
+  String mpplayinginfocenter;
+  String audio_source;
+  String asr_audio_path;
+  String asr_sch;
+  String asr_ptt;
+  String local_grammar;
+  String cloud_grammar;
+  String grammar_type;
+  String grammar_content;
+  String lexicon_content;
+  String lexicon_name;
+  String grammar_list;
+  String nlp_version;
+
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> param = {
+      'speech_timeout': speech_timeout,
+      'domain': domain,
+      'result_type': result_type,
+      'timeout': timeout,
+      'power_cycle': power_cycle,
+      'sample_rate': sample_rate,
+      'engine_type': engine_type,
+      'local': local,
+      'cloud': cloud,
+      'mix': mix,
+      'auto': auto,
+      'text_encoding': text_encoding,
+      'result_encoding': result_encoding,
+      'player_init': player_init,
+      'player_deactive': player_deactive,
+      'recorder_init': recorder_init,
+      'recorder_deactive': recorder_deactive,
+      'speed': speed,
+      'pitch': pitch,
+      'tts_audio_path': tts_audio_path,
+      'vad_enable': vad_enable,
+      'vad_bos': vad_bos,
+      'vad_eos': vad_eos,
+      'voice_name': voice_name,
+      'voice_id': voice_id,
+      'voice_lang': voice_lang,
+      'volume': volume,
+      'tts_buffer_time': tts_buffer_time,
+      'tts_data_notify': tts_data_notify,
+      'next_text': next_text,
+      'mpplayinginfocenter': mpplayinginfocenter,
+      'audio_source': audio_source,
+      'asr_audio_path': asr_audio_path,
+      'asr_sch': asr_sch,
+      'asr_ptt': asr_ptt,
+      'local_grammar': local_grammar,
+      'cloud_grammar': cloud_grammar,
+      'grammar_type': grammar_type,
+      'grammar_content': grammar_content,
+      'lexicon_content': lexicon_content,
+      'lexicon_name': lexicon_name,
+      'grammar_list': grammar_list,
+      'nlp_version': nlp_version,
+    };
+    final isNull = (key, value) {
+      return value == null;
+    };
+    param.removeWhere(isNull);
+    return param;
+  }
 }
