@@ -65,10 +65,15 @@ static FlutterMethodChannel *_channel = nil;
 #pragma mark - iFly delegate
 
 - (void)onCompleted:(IFlySpeechError *)errorCode {
-    [_channel invokeMethod:@"onCompleted" arguments:@[[NSNumber numberWithInt:errorCode.errorCode], errorCode.errorDesc]];
+    NSDictionary *dic = @{@"code": @(errorCode.errorCode),
+                          @"type": @(errorCode.errorType),
+                          @"desc": errorCode.errorDesc
+                          };
+    [_channel invokeMethod:@"onCompleted" arguments:@[dic, @"filePath"]];
 }
 
 - (void)onResults:(NSArray *)results isLast:(BOOL)isLast {
+    results = (results == nil) ? @[] : results;
     [_channel invokeMethod:@"onResults" arguments:@[results, @(isLast)]];
 }
 

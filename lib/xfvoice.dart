@@ -79,7 +79,8 @@ class XFVoiceListener {
   VoidCallback onCancel;
   VoidCallback onEndOfSpeech;
   VoidCallback onBeginOfSpeech;
-  void Function(int code, String msg) onCompleted;
+  /// error信息构成的key-value map，[filePath]是音频文件路径
+  void Function(Map<String, dynamic> error, String filePath) onCompleted;
   void Function(List results, bool isLast) onResults;
   void Function(int volume) onVolumeChanged;
 
