@@ -56,14 +56,11 @@ class _MyAppState extends State<MyApp> {
       onVolumeChanged: (volume) {
         print('$volume');
       },
-      onResults: (List<dynamic> results, isLast) {
-        if (results.length > 0) {
-          final first = results.first;
-          if (first is Map) {
-            setState(() {
-              iflyResultString += first.keys.first as String;
-            });
-          }
+      onResults: (String result, isLast) {
+        if (result.length > 0) {
+          setState(() {
+            iflyResultString += result;
+          });
         }
       },
       onCompleted: (Map<dynamic, dynamic> errInfo, String filePath) {
