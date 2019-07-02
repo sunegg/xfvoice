@@ -68,10 +68,14 @@ static FlutterMethodChannel *_channel = nil;
 #pragma mark - iFly delegate
 
 - (void)onCompleted:(IFlySpeechError *)errorCode {
-    NSDictionary *dic = @{@"code": @(errorCode.errorCode),
-                          @"type": @(errorCode.errorType),
-                          @"desc": errorCode.errorDesc
-                          };
+    NSDictionary *dic = NSNull.null;
+    if (errorCode.errorCode != 0) {
+        dic = @{@"code": @(errorCode.errorCode),
+                @"type": @(errorCode.errorType),
+                @"desc": errorCode.errorDesc
+                };
+    }
+    
     NSString *path = [[IFlySpeechRecognizer sharedInstance] parameterForKey:@"asr_audio_path"];
     NSArray *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory
                                                               , NSUserDomainMask
