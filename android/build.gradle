@@ -32,3 +32,9 @@ android {
         disable 'InvalidPackage'
     }
 }
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //使用ActivityCompat需要
+    //implementation 'androidx.appcompat:appcompat:1.0.2'
+}

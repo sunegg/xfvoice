@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     final voice = XFVoice.shared;
-    voice.init(appIdIos: '5d133a41', appIdAndroid: '5d133aae');
+    voice.init(appIdIos: '5d133a41', appIdAndroid: '5d199f2d');
     final param = new XFVoiceParam();
     param.domain = 'iat';
     param.asr_ptt = '0';
