@@ -1,10 +1,10 @@
 name: xfvoice
-description: 科大讯飞语音识别插件
+description: 科大讯飞语音听写插件
 version: 0.0.1
 authors:
-- ligun <ligun@cechealth.cn>
-- shizhenxing <shizhenxing@cechealth.cn>
-homepage: https://gitlab.cechealth.cn/ligun/xme-xfvoice
+- ligun <376438624@qq.com>
+- shizhenxing <al4fun@163.com>
+homepage: https://github.com/ligun123/xfvoice.git
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
