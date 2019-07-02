@@ -27,6 +27,10 @@ static FlutterMethodChannel *_channel = nil;
         [self start];
     } else if ([@"stop" isEqualToString:call.method]) {
         [self stop];
+    } else if ([@"dispose" isEqualToString:call.method]) {
+        [self cancel];
+    } else if ([@"cancel" isEqualToString:call.method]) {
+        [self cancel];
     } else {
         result(FlutterMethodNotImplemented);
     }
@@ -55,6 +59,10 @@ static FlutterMethodChannel *_channel = nil;
 
 - (void)stop {
     [[IFlySpeechRecognizer sharedInstance] stopListening];
+}
+
+- (void)cancel {
+    [[IFlySpeechRecognizer sharedInstance] cancel];
 }
 
 #pragma mark - iFly delegate
