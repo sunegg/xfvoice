@@ -27,6 +27,10 @@ static FlutterMethodChannel *_channel = nil;
         [self start];
     } else if ([@"stop" isEqualToString:call.method]) {
         [self stop];
+    } else if ([@"dispose" isEqualToString:call.method]) {
+        [self cancel];
+    } else if ([@"cancel" isEqualToString:call.method]) {
+        [self cancel];
     } else {
         result(FlutterMethodNotImplemented);
     }
@@ -57,13 +61,21 @@ static FlutterMethodChannel *_channel = nil;
     [[IFlySpeechRecognizer sharedInstance] stopListening];
 }
 
+- (void)cancel {
+    [[IFlySpeechRecognizer sharedInstance] cancel];
+}
+
 #pragma mark - iFly delegate
 
 - (void)onCompleted:(IFlySpeechError *)errorCode {
-    NSDictionary *dic = @{@"code": @(errorCode.errorCode),
-                          @"type": @(errorCode.errorType),
-                          @"desc": errorCode.errorDesc
-                          };
+    NSDictionary *dic = NSNull.null;
+    if (errorCode.errorCode != 0) {
+        dic = @{@"code": @(errorCode.errorCode),
+                @"type": @(errorCode.errorType),
+                @"desc": errorCode.errorDesc
+                };
+    }
+    
     NSString *path = [[IFlySpeechRecognizer sharedInstance] parameterForKey:@"asr_audio_path"];
     NSArray *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory
                                                               , NSUserDomainMask

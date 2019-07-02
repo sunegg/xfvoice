@@ -62,6 +62,14 @@ class XFVoice {
   Future<void> stop() async {
     await _channel.invokeMethod('stop');
   }
+
+  Future<void> dispose() async {
+    await _channel.invokeMethod('dispose');
+  }
+
+  Future<void> cancel() async {
+    await _channel.invokeMethod('cancel');
+  }
   
   /// 用完记得释放listener
   void clearListener() {
