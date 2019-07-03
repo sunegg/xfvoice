@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'dart:io';
 
 import 'package:xfvoice/xfvoice.dart';
 
@@ -23,7 +22,7 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     final voice = XFVoice.shared;
-    voice.init(appIdIos: '5d133a41', appIdAndroid: '5d133aae');
+    voice.init(appIdIos: '5d133a41', appIdAndroid: '5d199f2d');
     final param = new XFVoiceParam();
     param.domain = 'iat';
     param.asr_ptt = '0';
@@ -56,14 +55,11 @@ class _MyAppState extends State<MyApp> {
       onVolumeChanged: (volume) {
         print('$volume');
       },
-      onResults: (List<dynamic> results, isLast) {
-        if (results.length > 0) {
-          final first = results.first;
-          if (first is Map) {
-            setState(() {
-              iflyResultString += first.keys.first as String;
-            });
-          }
+      onResults: (String result, isLast) {
+        if (result.length > 0) {
+          setState(() {
+            iflyResultString += result;
+          });
         }
       },
       onCompleted: (Map<dynamic, dynamic> errInfo, String filePath) {

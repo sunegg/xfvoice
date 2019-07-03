@@ -86,8 +86,12 @@ static FlutterMethodChannel *_channel = nil;
 }
 
 - (void)onResults:(NSArray *)results isLast:(BOOL)isLast {
-    results = (results == nil) ? @[] : results;
-    [_channel invokeMethod:@"onResults" arguments:@[results, @(isLast)]];
+    NSString *res = NSNull.null;
+    if (results != nil) {
+        NSDictionary *dic = [results firstObject];
+        res = dic.allKeys.firstObject;
+    }
+    [_channel invokeMethod:@"onResults" arguments:@[res, @(isLast)]];
 }
 
 - (void)onVolumeChanged:(int)volume {
