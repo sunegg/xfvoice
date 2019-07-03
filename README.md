@@ -90,3 +90,7 @@ The `results` type is based on the parameter `result_type` you setted before. It
 ```
 voice.stop();
 ```
+
+## Important
+The bonary downloaded from xunfei is bind with you appid.  
+So, when you use this plugin, you should replace the bonary in both Android and iOS project.
