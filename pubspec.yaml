@@ -1,6 +1,6 @@
 name: xfvoice
-description: 科大讯飞语音识别插件
-version: 0.0.1
+description: 科大讯飞语音识别插件(Plugin for xunfei voice detaction)
+version: 1.0.0
 authors:
 - ligun <ligun@cechealth.cn>
 - shizhenxing <shizhenxing@cechealth.cn>
