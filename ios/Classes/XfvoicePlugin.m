@@ -6,6 +6,8 @@ static FlutterMethodChannel *_channel = nil;
 
 @interface XfvoicePlugin () <IFlySpeechRecognizerDelegate>
 
+@property (nonatomic, strong) NSString *resultString;
+
 @end
 
 @implementation XfvoicePlugin
@@ -54,6 +56,7 @@ static FlutterMethodChannel *_channel = nil;
     if ([[IFlySpeechRecognizer sharedInstance] isListening]) {
         return;
     }
+    self.resultString = nil;
     [[IFlySpeechRecognizer sharedInstance] startListening];
 }
 
@@ -90,6 +93,11 @@ static FlutterMethodChannel *_channel = nil;
     if (results != nil) {
         NSDictionary *dic = [results firstObject];
         res = dic.allKeys.firstObject;
+        self.resultString = res;
+    } else {
+        if (self.resultString != nil) {
+            res = self.resultString;
+        }
     }
     [_channel invokeMethod:@"onResults" arguments:@[res, @(isLast)]];
 }
