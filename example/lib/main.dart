@@ -22,7 +22,7 @@ class _MyApp extends State<MyApp> {
    Future<void> initPlatformState() async {
     final voice = XFVoice.shared;
     // 请替换成你的appid
-    voice.init(appIdIos: '5d53632c', appIdAndroid: '5d53633c');
+    voice.init(appIdIos: 'xxxxxxx', appIdAndroid: 'xxxxxxx');
     final param = new XFVoiceParam();
     param.domain = 'iat';
     param.asr_ptt = '0';
