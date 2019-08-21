@@ -60,12 +60,16 @@ voice.init(appIdIos: 'the app id for ios', appIdAndroid: 'the app id for android
 ```
 - Set the parameter. Class `XFVoiceParam` is usefull.
 ```
-final param = new XFVoiceParam();
-param.domain = 'iat';
-param.asr_ptt = '0';
-param.asr_audio_path = 'xme.pcm';
-param.result_type = 'plain';
-voice.setParameter(param.toMap());
+    // 请替换成你的appid
+    voice.init(appIdIos: '5d133a41', appIdAndroid: '5d133aae');
+    final param = new XFVoiceParam();
+    param.domain = 'iat';
+    // param.asr_ptt = '0';   //取消注释可去掉标点符号
+    param.asr_audio_path = 'audio.pcm';
+    param.result_type = 'json'; //可以设置plain
+    final map = param.toMap();
+    map['dwa'] = 'wpgs';        //设置动态修正，开启动态修正要使用json类型的返回格式
+    voice.setParameter(map);
 ```
 
 - Start dictation. Use `XFVoiceListener` for listen on the callback.
@@ -74,8 +78,8 @@ final listener = XFVoiceListener(
       onVolumeChanged: (volume) {
         print('$volume');
       },
-      onResults: (List<dynamic> results, isLast) {
-        print(results.toString());
+      onResults: (String result, isLast) {
+        print(result.toString());
       },
       onCompleted: (Map<dynamic, dynamic> errInfo, String filePath) {
         print('onCompleted');
@@ -83,7 +87,7 @@ final listener = XFVoiceListener(
     );
 voice.start(listener: listener);
 ```
-The `results` type is based on the parameter `result_type` you setted before. It may be `json/xml/plain`.
+The `result` type is based on the parameter `result_type` you setted before. It may be `json/xml/plain`.
 
 - Stop dictate.
 
@@ -92,5 +96,15 @@ voice.stop();
 ```
 
 ## Important
-The bonary downloaded from xunfei is bind with you appid.  
-So, when you use this plugin, you should replace the bonary in both Android and iOS project.
+The binary downloaded from xunfei is bind with you appid.  
+So, when you use this plugin, you should replace the binary in both Android and iOS project.
+
+iOS
+```
+xfvoice/ios/Frameworks/iflyMSC.framework
+```
+
+Android
+```
+xfvoice/android/libs/Msc.jar
+```
