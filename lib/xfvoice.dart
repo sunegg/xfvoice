@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +18,8 @@ class XFVoice {
 
   XFVoice._();
 
-  Future<void> init({@required String appIdIos, @required String appIdAndroid}) async {
+  Future<void> init(
+      {@required String appIdIos, @required String appIdAndroid}) async {
     if (Platform.isIOS) {
       await _channel.invokeMethod('init', appIdIos);
     }
@@ -40,7 +42,8 @@ class XFVoice {
       if (call.method == 'onCancel' && listener?.onCancel != null) {
         listener.onCancel();
       }
-      if (call.method == 'onBeginOfSpeech' && listener?.onBeginOfSpeech != null) {
+      if (call.method == 'onBeginOfSpeech' &&
+          listener?.onBeginOfSpeech != null) {
         listener.onBeginOfSpeech();
       }
       if (call.method == 'onEndOfSpeech' && listener?.onEndOfSpeech != null) {
@@ -52,7 +55,8 @@ class XFVoice {
       if (call.method == 'onResults' && listener?.onResults != null) {
         listener.onResults(call.arguments[0], call.arguments[1]);
       }
-      if (call.method == 'onVolumeChanged' && listener?.onVolumeChanged != null) {
+      if (call.method == 'onVolumeChanged' &&
+          listener?.onVolumeChanged != null) {
         listener.onVolumeChanged(call.arguments);
       }
     });
@@ -70,7 +74,7 @@ class XFVoice {
   Future<void> cancel() async {
     await _channel.invokeMethod('cancel');
   }
-  
+
   /// 用完记得释放listener
   void clearListener() {
     _channel.setMethodCallHandler(null);
@@ -83,21 +87,126 @@ class XFVoiceListener {
   VoidCallback onCancel;
   VoidCallback onEndOfSpeech;
   VoidCallback onBeginOfSpeech;
+
   /// error信息构成的key-value map，[filePath]是音频文件路径
   void Function(Map<dynamic, dynamic> error, String filePath) onCompleted;
   void Function(String result, bool isLast) onResults;
   void Function(int volume) onVolumeChanged;
 
-  XFVoiceListener({
-    this.onBeginOfSpeech,
-    this.onResults,
-    this.onVolumeChanged,
-    this.onEndOfSpeech,
-    this.onCompleted,
-    this.onCancel
-  });
+  XFVoiceListener(
+      {this.onBeginOfSpeech,
+      this.onResults,
+      this.onVolumeChanged,
+      this.onEndOfSpeech,
+      this.onCompleted,
+      this.onCancel});
 }
 
+/* Example
+ * {
+  "sn": 1,
+  "ls": true,
+  "bg": 0,
+  "ed": 0,
+  "ws": [
+    {
+      "bg": 0,
+      "cw": [
+        {
+          "w": " 今天 ",
+          "sc": 0
+        }
+      ]
+    },
+    {
+      "bg": 0,
+      "cw": [
+        {
+          "w": " 的",
+          "sc": 0
+        }
+      ]
+    },
+    {
+      "bg": 0,
+      "cw": [
+        {
+          "w": " 天气 ",
+          "sc": 0
+        }
+      ]
+    },
+    {
+      "bg": 0,
+      "cw": [
+        {
+          "w": " 怎么样 ",
+          "sc": 0
+        }
+      ]
+    },
+    {
+      "bg": 0,
+      "cw": [
+        {
+          "w": " 。",
+          "sc": 0
+        }
+      ]
+    }
+  ]
+}
+ */
+class XFJsonResult {
+  int sn;
+  bool ls;
+  int bg;
+  int ed;
+  String pgs;
+  List rg;
+  List ws;
+
+  XFJsonResult(String jsonResult) {
+    final json = jsonDecode(jsonResult);
+    this.sn = json['sn'] as int;
+    this.ls = json['ls'] as bool;
+    this.bg = json['bg'] as int;
+    this.ed = json['ed'] as int;
+    this.pgs = json['pgs'] as String;
+    this.rg = json['rg'] as List;
+    this.ws = json['ws'] as List;
+  }
+
+  /// 适配动态修正
+  void mix(XFJsonResult another) {
+    this.sn = another.sn;
+    this.ls = another.ls;
+    this.bg = another.bg;
+    this.ed = another.ed;
+    this.rg = another.rg;
+    if (another.pgs == 'apd') {
+      this.ws.addAll(another.ws);
+    } else {
+      this.ws = another.ws;
+    }
+  }
+
+  String resultText() {
+    final resultStr = this
+        .ws
+        .map((element) {
+          List cw = element['cw'];
+          if (cw == null || cw.length == 0) {
+            return '';
+          } else {
+            return cw[0]['w'] as String;
+          }
+        })
+        .toList()
+        .join();
+    return resultStr;
+  }
+}
 
 class XFVoiceParam {
   String speech_timeout;

@@ -44,6 +44,7 @@ static FlutterMethodChannel *_channel = nil;
     NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@", appId];
     [IFlySpeechUtility createUtility:initString];
     [[IFlySpeechRecognizer sharedInstance] setDelegate:self];
+    [IFlySetting setLogFile:LVL_NONE];
 }
 
 - (void)setParameter:(NSDictionary *)param {

@@ -13,6 +13,8 @@ class _MyApp extends State<MyApp> {
   String voiceMsg = '暂无数据';
   String iflyResultString = '按下方块说话';
 
+  XFJsonResult xfResult;
+
   @override
   void initState() {
     super.initState();
@@ -25,10 +27,12 @@ class _MyApp extends State<MyApp> {
     voice.init(appIdIos: 'xxxxxxx', appIdAndroid: 'xxxxxxx');
     final param = new XFVoiceParam();
     param.domain = 'iat';
-    param.asr_ptt = '0';
+    // param.asr_ptt = '0';
     param.asr_audio_path = 'xme.pcm';
-    param.result_type = 'plain';
-    voice.setParameter(param.toMap());
+    param.result_type = 'json';
+    final map = param.toMap();
+    map['dwa'] = 'wpgs';
+    voice.setParameter(map);
   }
 
   @override
@@ -54,7 +58,7 @@ class _MyApp extends State<MyApp> {
               _recongize();
             },
             onTapUp: (d) {
-              _recongizeOver();
+              // _recongizeOver();
             },
           ),
         )
@@ -65,13 +69,20 @@ class _MyApp extends State<MyApp> {
   void _recongize() {
     final listen = XFVoiceListener(
       onVolumeChanged: (volume) {
-        print('$volume');
+      },
+      onBeginOfSpeech: () {
+        xfResult = null;
       },
       onResults: (String result, isLast) {
+        if (xfResult == null) {
+          xfResult = XFJsonResult(result);
+        } else {
+          final another = XFJsonResult(result);
+          xfResult.mix(another);
+        }
         if (result.length > 0) {
-          print('这个是result： $result');
           setState(() {
-            iflyResultString = result;
+            iflyResultString = xfResult.resultText();
           });
         }
       },
