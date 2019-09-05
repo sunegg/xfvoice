@@ -100,6 +100,7 @@ class XFVoiceListener {
 
 
 class XFVoiceParam {
+  String accent;
   String speech_timeout;
   String domain;
   String result_type;
@@ -146,6 +147,7 @@ class XFVoiceParam {
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> param = {
+      'accent': accent,
       'speech_timeout': speech_timeout,
       'domain': domain,
       'result_type': result_type,
