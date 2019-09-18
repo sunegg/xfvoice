@@ -23,16 +23,22 @@ static FlutterMethodChannel *_channel = nil;
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
     if ([@"init" isEqualToString:call.method]) {
         [self iflyInit:call.arguments];
+        result(NULL);
     } else if ([@"setParameter" isEqualToString:call.method]) {
         [self setParameter:call.arguments];
+        result(NULL);
     } else if ([@"start" isEqualToString:call.method]) {
         [self start];
+        result(NULL);
     } else if ([@"stop" isEqualToString:call.method]) {
         [self stop];
+        result(NULL);
     } else if ([@"dispose" isEqualToString:call.method]) {
         [self cancel];
+        result(NULL);
     } else if ([@"cancel" isEqualToString:call.method]) {
         [self cancel];
+        result(NULL);
     } else {
         result(FlutterMethodNotImplemented);
     }
