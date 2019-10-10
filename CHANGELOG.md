@@ -13,3 +13,7 @@
 ## 1.0.2
 
 * fix: combine result Strings in Android.
+
+## 1.0.3
+
+* fix: adapt the json result and add accent support.
