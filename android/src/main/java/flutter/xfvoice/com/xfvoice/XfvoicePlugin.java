@@ -36,7 +36,6 @@ public class XfvoicePlugin implements MethodCallHandler {
     //private Activity activity;
     private SpeechRecognizer recognizer;
     private String filePath;
-    private StringBuilder resultBuilder = new StringBuilder();
 
     /**
      * Plugin registration.
@@ -101,17 +100,14 @@ public class XfvoicePlugin implements MethodCallHandler {
 
         @Override
         public void onResult(RecognizerResult results, boolean isLast) {
-            String result = resultBuilder.append(results.getResultString()).toString();
-            Log.d(TAG, "onResult():" + result);
+            Log.d(TAG, "onResult():" + results.getResultString());
 
             ArrayList<Object> arguments = new ArrayList<>();
-            arguments.add(result);
+            arguments.add(results.getResultString());
             arguments.add(isLast);
             channel.invokeMethod("onResults", arguments);
 
             if (isLast) {
-                resultBuilder.delete(0,resultBuilder.length());
-
                 ArrayList<Object> args = new ArrayList<>();
                 arguments.add(null);
                 arguments.add(filePath);
